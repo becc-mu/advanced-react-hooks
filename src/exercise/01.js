@@ -14,7 +14,7 @@ const countReducer = (state, action) => {
     case 'DECREMENT':
       return {count: state.count - action.step}
     case 'RESET':
-      return init(action.payload)
+      return init(state.initialCount || 0)
     default:
       throw new Error(`Unsupported action type: ${action.type}`)
   }
@@ -28,7 +28,15 @@ function Counter({initialCount = 0, step = 1}) {
 
   const {count} = state
   const increment = () => despatch({type: 'INCREMENT', step})
-  return <button onClick={increment}>{count}</button>
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={() => despatch({type: 'INCREMENT', step})}>+</button>
+      <button onClick={() => despatch({type: 'DECREMENT', step})}>-</button>
+      <button onClick={() => despatch({type: 'RESET', step})}>reset</button>
+    </div>
+  )
 }
 
 function App() {
